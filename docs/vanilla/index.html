@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ocr-cam vanilla demo</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      (async () => {
+        const url =
+          "https://cdn.jsdelivr.net/gh/Duffy1001/ocr-cam@master/examples/vanilla/index.html";
+        const res = await fetch(url, { cache: "no-store" });
+        const html = await res.text();
+        document.open();
+        document.write(html);
+        document.close();
+      })();
+    </script>
+  </body>
+</html>
