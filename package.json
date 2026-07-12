@@ -2,7 +2,7 @@
   "name": "ocr-cam",
   "version": "0.1.0",
   "description": "Headless browser OCR with camera support using ONNX Runtime Web and PaddleOCR-style DBNet/CRNN models",
-  "homepage": "https://Duffy1001.github.io/ocr-cam/",
+  "homepage": "https://TrystinDuffy.github.io/ocr-cam/",
   "type": "module",
   "exports": {
     ".": {
@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:browser": "vitest run --browser",
+    "test:browser": "vitest run",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

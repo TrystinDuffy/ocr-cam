@@ -55,7 +55,7 @@
   </div>
 
   <script type="module">
-    import { createBrowserOcr, createOnnxOcrEngine } from "https://cdn.jsdelivr.net/gh/Duffy1001/ocr-cam@master/dist/index.js";
+    import { createBrowserOcr, createOnnxOcrEngine } from "https://cdn.jsdelivr.net/gh/TrystinDuffy/ocr-cam@master/dist/index.js";
 
     const statusEl = document.getElementById("status");
     const previewEl = document.getElementById("preview");
@@ -72,7 +72,7 @@
       statusEl.className = type === "error" ? "error" : type === "success" ? "success" : "";
     }
 
-    const CDN_BASE = "https://cdn.jsdelivr.net/gh/Duffy1001/ocr-cam@master";
+    const CDN_BASE = "https://cdn.jsdelivr.net/gh/TrystinDuffy/ocr-cam@master";
     const ORT_BASE = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/";
 
     const engine = createOnnxOcrEngine({

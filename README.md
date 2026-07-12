@@ -300,7 +300,7 @@ unsub();
 await ocr.destroy();
 
 // After destroy(), all methods throw OcrError with code "DESTROYED"
-// except detachView(), setDrawingEnabled(), clearDrawing() which are safe no-ops
+// except detachView() which is safe to call
 ```
 
 `destroy()`:

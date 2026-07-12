@@ -73,6 +73,15 @@ export function createOcrController(
   // during an in-flight getUserMedia/video startup.
   let cameraStartAttemptId = 0;
 
+  function createAbortError(): Error {
+    if (typeof DOMException !== "undefined") {
+      return new DOMException("Aborted", "AbortError");
+    }
+    const err = new Error("Aborted");
+    err.name = "AbortError";
+    return err;
+  }
+
   const temporalCfg = config.inference?.temporal;
   let temporalTick = 0;
   let temporalBuffer: OcrResult[] = [];
@@ -535,12 +544,7 @@ export function createOcrController(
         // into the running state.
         if (myAttemptId !== cameraStartAttemptId || state.getState() !== "starting-camera") {
           cameraCtrl.stop();
-          return {
-            sessionId: 0,
-            width: info.width,
-            height: info.height,
-            facingMode: undefined,
-          };
+          throw createAbortError();
         }
         sessionId = nextSessionId++;
         frameId = 0;
@@ -565,15 +569,11 @@ export function createOcrController(
 
         return sessionInfo;
       } catch (err) {
-        if (myAttemptId !== cameraStartAttemptId) {
-          // startCamera was cancelled while awaiting getUserMedia/video startup
+        const cancelled = myAttemptId !== cameraStartAttemptId || state.getState() !== "starting-camera";
+        if (cancelled) {
           cameraCtrl.stop();
-          return {
-            sessionId: 0,
-            width: 0,
-            height: 0,
-            facingMode: undefined,
-          };
+          if (err instanceof Error && err.name === "AbortError") throw err;
+          throw createAbortError();
         }
         // Camera error must not corrupt loaded engine – go to error, which can
         // recover to idle (load is still valid).
@@ -707,6 +707,10 @@ export function createOcrController(
     async destroy() {
       if (destroyed) return;
       destroyed = true;
+
+      // Invalidate any in-flight startCamera() attempt so it won't transition
+      // into running after teardown.
+      cameraStartAttemptId++;
 
       frameScheduler.stop();
       cameraCtrl.stop();
